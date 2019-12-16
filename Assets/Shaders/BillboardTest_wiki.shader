@@ -3,7 +3,7 @@
 	Based on billboarding shader tutorial on http://www.opengl-tutorial.org
 */
 
-Shader "BillboarShader" {
+Shader "OGAF_Shader" {
 	Properties{
 	
 		_MainTex("Texture Image", 2D) = "white" {}
@@ -47,6 +47,8 @@ Shader "BillboarShader" {
 			  vertexOutput vert(vertexInput i)
 			  {
 				vertexOutput output;				  
+
+				//output.pos = UnityObjectToClipPos(float4( (UNITY_MATRIX_V[0].xyz) + (UNITY_MATRIX_V[1].xyz), 1));
 
 				output.pos = UnityObjectToClipPos(float4((_ScaleX * i.v.x *  UNITY_MATRIX_V[0].xyz) + (_ScaleY * i.v.y * UNITY_MATRIX_V[1].xyz), 1));
 				
@@ -109,7 +111,7 @@ Shader "BillboarShader" {
 						 discard;
 					 }
 				 }				 
-				 return float4(textureColor.x, textureColor.y, textureColor.z, 1.0f);
+				 return float4(textureColor.xyz, 1.0f);
 			  }
 
 			  ENDCG

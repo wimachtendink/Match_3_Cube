@@ -5,12 +5,16 @@ using UnityEngine;
 public class SpaceMaker : MonoBehaviour
 {
 
+    public ButtonValue dimButtonValue;
+    public ButtonValue colorButtonValue;
+
     public bool ThereIsAWorld = false;
 
     public bool animateStartStuff;
 
     public GameObject GemPrefab;
 
+    [Range(3,6)]
     public int qtyGemColors;
 
     public static int Dimentions;
@@ -25,14 +29,21 @@ public class SpaceMaker : MonoBehaviour
     public SelectedPiece sp;
 
 
-    public void CreateNewCubeSpace(int _dim)
+    public void CreateNewCubeSpace()
     {
+        int _dim = dimButtonValue.value;
+        qtyGemColors = colorButtonValue.value;
+
+        if (addressBook != null)
+        {
+            Apocalypse();
+        }
 
         Dimentions = _dim;
         dimentions = _dim;
         DimentionsCube = _dim * _dim * _dim;
 
-        FillSpaceWithGems(_dim);
+        FillSpaceWithGems(_dim, qtyGemColors);
 
         RemoveRuns();
         AnimateAppearAllGems();
@@ -40,7 +51,6 @@ public class SpaceMaker : MonoBehaviour
         ThereIsAWorld = true;
 
     }
-
 
     void AnimateAppearAllGems()
     {
@@ -88,7 +98,18 @@ public class SpaceMaker : MonoBehaviour
 //        print("ran " + counter + " times");
     }
 
-    void FillSpaceWithGems(int _dim)
+    public void Apocalypse()
+    {
+        foreach(var pair in addressBook)
+        {
+            Destroy(pair.Value.gameObject);
+        }
+
+        addressBook = new Dictionary<Vector3Int, Gem>();
+    }
+
+
+    void FillSpaceWithGems(int _dim, int _qtyColors)
     {
         addressBook = new Dictionary<Vector3Int, Gem>(DimentionsCube);
         for (int x = 0; x < dimentions; x++)
@@ -101,7 +122,7 @@ public class SpaceMaker : MonoBehaviour
                     temp.transform.localPosition = new Vector3(x, y, z);
                     temp.GetComponent<Gem>().Address = new Vector3Int(x, y, z);
                     addressBook.Add(temp.GetComponent<Gem>().Address, temp.GetComponent<Gem>());
-                    temp.GetComponent<Gem>().MakeNewRandomGem(qtyGemColors);
+                    temp.GetComponent<Gem>().MakeNewRandomGem(_qtyColors);
                 }
             }
         }

@@ -7,8 +7,8 @@ using UnityEngine.Events;
 
 public class SelectedPiece : MonoBehaviour
 {
-
     public GemSwapper swapper;
+    public ButtonManager ButtonManager;
 
     public int CurrentChain = 0;
 
@@ -38,13 +38,12 @@ public class SelectedPiece : MonoBehaviour
     //this is the only method which actually logically belongs in this script, Everything else should move I think
     public void OnIndicatorClick()
     {
-        if(sm.ThereIsAWorld)
+        if(!ButtonManager.CheckForMenuButtonClick() && sm.ThereIsAWorld)
         {
             if (!controllerIsLocked)
             {
                 FireSounds.PlaySound(FireSounds.Click);
                 Gem tempGem;
-                //first we see if we have selected a gem.
 
                 if (sm.addressBook.ContainsKey(selectionLocation.controllerPlayspacePostion))
                 {
@@ -62,7 +61,7 @@ public class SelectedPiece : MonoBehaviour
                             if (Gem.directions.Contains(test))
                             {
                                 Indicator.SetActive(false);
-                                swapper.TrySwapGems(tempGem, selected);
+                                swapper.TrySwapGems(tempGem, selected, fallDirection);
                             }
                             else
                             {
@@ -92,6 +91,7 @@ public class SelectedPiece : MonoBehaviour
                 }
                 else
                 {
+//                    Debug.Log("setting fall direction - or trying to");
                     //should be get distance to center > (dimentions), set to dir.floortotin
                     if (selectionLocation.controllerPlayspacePostion.x > sm.dimentions)
                     {

@@ -21,17 +21,17 @@ public class GemSwapper : MonoBehaviour
 
     public UnityEvent onScoreIncriment;
 
-    public Vector3Int fallDirection = Vector3Int.down;
+    //public Vector3Int fallDirection = Vector3Int.down;
 
     public GameObject FallDirectionIndicator;
 
-    public void TrySwapGems(Gem g1, Gem g2)
+    public void TrySwapGems(Gem g1, Gem g2, Vector3Int _fallDirection)
     {
         FireSounds.PlaySound(FireSounds.Swap);
-        StartCoroutine(DealWithSwap(g1, g2));
+        StartCoroutine(DealWithSwap(g1, g2, _fallDirection));
     }
 
-    IEnumerator DealWithSwap(Gem g1, Gem g2)
+    IEnumerator DealWithSwap(Gem g1, Gem g2, Vector3Int _fallDirection)
     {
         CurrentChain = 0;
 
@@ -61,7 +61,7 @@ public class GemSwapper : MonoBehaviour
             //swap model locations
             yield return StartCoroutine(Gem.AnimateDoubleSwap(g1, g2, true));
             //run chains!
-            yield return StartCoroutine(RunChain(sm.addressBook, true));
+            yield return StartCoroutine(RunChain(sm.addressBook, true, _fallDirection));
         }
         else
         {
@@ -78,7 +78,7 @@ public class GemSwapper : MonoBehaviour
         controllerIsLocked = false;
     }
 
-    public IEnumerator RunChain(Dictionary<Vector3Int, Gem> world, bool animate)
+    public IEnumerator RunChain(Dictionary<Vector3Int, Gem> world, bool animate, Vector3Int _fallDirection)
     {
         List<Gem> dropList = new List<Gem>();
 
@@ -158,7 +158,7 @@ public class GemSwapper : MonoBehaviour
                     bool inBounds = true;
 
                     Vector3Int startAddress = ListOfMatched[i].Address;
-                    Vector3Int offset = fallDirection;
+                    Vector3Int offset = _fallDirection;
 
                     while (inBounds)
                     {
@@ -222,7 +222,7 @@ public class GemSwapper : MonoBehaviour
 
                 dropList.Clear();
 
-                Vector3Int wayUp = fallDirection * -sm.dimentions;
+                Vector3Int wayUp = _fallDirection * -sm.dimentions;
 
                 foreach (var g in ListOfMatched)
                 {

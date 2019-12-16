@@ -28,7 +28,7 @@ public class ScaleAndMove : MonoBehaviour
         {
             MinimumScale = 0.2f;
         }
-        currentScale = 1;
+        currentScale = ScaleAndMoveMe.localScale.x;
     }
 
     public void Reset()

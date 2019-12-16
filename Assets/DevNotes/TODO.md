@@ -10,18 +10,20 @@ While the menu is open, if controller select, get check if the controller is clo
 a simple slider in 3d which follows a path set beforehand (probably just straight - but curved could be fun)
 
 ### Number Box:
-box/quad with a number in it, click attached up and down arrows to change it
+>>current  box/quad with a number in it, click attached up and down arrows to change it
 
-## More Colors
-make more colors for players to choose
+## More Shapes
+Now that I have colors, I need shapes
 
 ## Level Shape Editor
-it would be nice to be able to make non-cube level shapes
+it would be nice to be able to make levels shaped other than cubes
 
 
 ## misc.
 
 Is possible moves checker working? look into this
 
-make a score counter on the black hole and some lights or whatever - space-opera basket ball hoop
 
+## BUGS:
+
+lock not preventing direction change	

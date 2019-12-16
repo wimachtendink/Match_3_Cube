@@ -120,7 +120,7 @@ public class Gem : MonoBehaviour
         MeshRenderer m = gameObject.GetComponent<MeshRenderer>();
         MaterialPropertyBlock p = new MaterialPropertyBlock();
         ChangeGemTypeAppearance(m, p);
-        StartCoroutine(AnimateGrow(m, p));
+        //StartCoroutine(AnimateGrow(m, p));
     }
 
     public IEnumerator UpdateGemAppearance_Coroutine(bool animate)
@@ -288,16 +288,24 @@ public class Gem : MonoBehaviour
 
     public void UpdateShape(MaterialPropertyBlock p)
     {
-        p.SetFloat("_Shape", (int)myType);
+        p.SetFloat("_Glyph", (int)myType + 1);
     }
 
     public void UpdateColor(MaterialPropertyBlock p)
     {
-        p.SetColor("_Color", GetColor());
+        p.SetColor("_Primary_Color", GetColor());
+        p.SetColor("_Secondary_Color", GetSecondaryColor());
     }
 
     public Color GetColor()
     {
         return GemColors[myType];
+    }
+
+    public Color GetSecondaryColor()
+    {
+        int t = ColorList._kellysMaxContrastSet.Count;
+        t = ((int)myType + t / 2) % t;
+        return ColorList._kellysMaxContrastSet[t];
     }
 }

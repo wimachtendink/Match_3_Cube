@@ -31,3 +31,25 @@ public class ColorList
         new Color(0x81/255.0f,0x70/255.0f,0x66/255.0f), //Medium Gray
     };
 }
+
+
+/*
+
+    OTHER COLORS FOR REFERENCE - less color blind accessible
+
+
+    UIntToColor( 007D34), //Vivid Green
+    UIntToColor( F6768E), //Strong Purplish Pink
+    UIntToColor( 00538A), //Strong Blue
+    UIntToColor( FF7A5C), //Strong Yellowish Pink
+    UIntToColor( 53377A), //Strong Violet
+    UIntToColor( FF8E00), //Vivid Orange Yellow
+    UIntToColor( B32851), //Strong Purplish Red
+    UIntToColor( F4C800), //Vivid Greenish Yellow
+    UIntToColor( 7F180D), //Strong Reddish Brown
+    UIntToColor( 93AA00), //Vivid Yellowish Green
+    UIntToColor( 593315), //Deep Yellowish Brown
+    UIntToColor( F13A13), //Vivid Reddish Orange
+    UIntToColor( 232C16), //Dark Olive Green
+
+ */
