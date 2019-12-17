@@ -22,8 +22,6 @@ public class MenuButton : MonoBehaviour
     {
         ButtonManager.instance.menuButtons.Remove(this);
     }
-
-
     public void OnClick()
     {
         EventToInvoke.Invoke();
