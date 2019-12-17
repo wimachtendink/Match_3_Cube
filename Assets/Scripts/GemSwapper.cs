@@ -37,11 +37,7 @@ public class GemSwapper : MonoBehaviour
         CurrentChain = 0;
 
         controllerIsLocked = true;
-
-        //OLD COMMENT: this is probably a terrible use of memory
-        //new: what about this could be bad?
-        //we're copying the world into a temp thing so we don't break anything, makes sense to me
-        //maybe we could mkae this a little more functional?
+        
         Dictionary<Vector3Int, Gem> fakeWorld = new Dictionary<Vector3Int, Gem>(sm.addressBook);
         List<Gem> removeList = new List<Gem>(SpaceMaker.DimentionsCube);
 
@@ -51,7 +47,7 @@ public class GemSwapper : MonoBehaviour
 
         //change this to only check the rays on which the gems actually sit 
             // no, we need to check all rays that either gem sits on 
-        Checker.CheckWorldForMatch3(fakeWorld, removeList, new List<List<Vector3Int>>(), true);
+        Checker.instance.CheckWorldForMatch3(fakeWorld, removeList, new List<List<Vector3Int>>(), true);
 
         if (removeList.Contains(g1) || removeList.Contains(g2))
         {
@@ -78,9 +74,6 @@ public class GemSwapper : MonoBehaviour
             //swap again because the first one was bad
             yield return StartCoroutine(Gem.AnimateDoubleSwap(g1, g2, true));//this should swap
         }
-
-        //return controll to user
-
         controllerIsLocked = false;
     }
 
@@ -91,14 +84,14 @@ public class GemSwapper : MonoBehaviour
         List<LineRenderer> lrs = new List<LineRenderer>();
         List<Gem> ListOfMatched = new List<Gem>(SpaceMaker.DimentionsCube);
         List<List<Vector3Int>> listOfLines = new List<List<Vector3Int>>();
-        LineRenderer lr;
+        LineRenderer lineRenderer;
         bool done = false;
         Coroutine coroutine;
 
         //this is getting a little ugly, it might be nice to modulalize some of this
         while (!done)
         {
-            Checker.CheckWorldForMatch3(world, ListOfMatched, listOfLines, true);
+            Checker.instance.CheckWorldForMatch3(world, ListOfMatched, listOfLines, true);
             //if we have some things,
             if (ListOfMatched.Count > 0)
             {
@@ -114,17 +107,17 @@ public class GemSwapper : MonoBehaviour
                         onScoreIncriment.Invoke();
 
                         //make a pretty little line renderer
-                        lr = Instantiate(lr_Prefab, sm.transform);
+                        lineRenderer = Instantiate(lr_Prefab, sm.transform);
 
-                        lr.positionCount = 3;
+                        lineRenderer.positionCount = 3;
                         //todo:make line scale with playspace
-                        lr.widthMultiplier = sm.transform.localScale.magnitude * 0.1f;
+                        lineRenderer.widthMultiplier = sm.transform.localScale.magnitude * 0.1f;
 
                         for (int i = 0; i < listOfLines[l].Count; i++)
                         {
-                            lr.SetPosition(i, listOfLines[l][i]);
+                            lineRenderer.SetPosition(i, listOfLines[l][i]);
                         }
-                        lrs.Add(lr);
+                        lrs.Add(lineRenderer);
                         yield return new WaitForSeconds(clipLen / CurrentChain);
                     }
 

@@ -5,11 +5,17 @@ using UnityEngine.Events;
 public class Checker : MonoBehaviour
 {
 
-    public static UnityEvent NoRemainingMoves;
+    public static Checker instance;
+
+    //[SerializeField]
+    public UnityEvent NoRemainingMoves;
+    private void Start()
+    {
+        instance = this;
+    }
+
     public const int RUN_LENGTH = 3;
-    // TODO: why is this global?
-    //private static bool _thereIsAMove = false;
-    public static GemType GetBestSwapToColor(Gem g, Dictionary<Vector3Int, Gem> world)
+    public  GemType GetBestSwapToColor(Gem g, Dictionary<Vector3Int, Gem> world)
     {
 
         GemType ReturnValue = GemType.none;
@@ -60,11 +66,11 @@ public class Checker : MonoBehaviour
     /// <param name="directions"></param>
     /// <param name="world"></param>
     /// <returns></returns>
-    public static bool CheckForMatchWithNeighbor(Gem gemToCheck, GemType myGemType, List<Vector3Int> directions, Dictionary<Vector3Int, Gem> world)
+    public  bool CheckForMatchWithNeighbor(Gem gemToCheck, GemType myGemType, List<Vector3Int> directions, Dictionary<Vector3Int, Gem> world)
     {
         foreach(var dir in directions)
         {
-            // TODO: verify that this can't be prematurely true
+            // TODO: ADD TEST - verify that this can't be prematurely true
             // TODO: add a bunch of tests, since i'm only dealing with a ray at a time, it should be somewhat trivial
             if(world.ContainsKey(gemToCheck.Address + dir) && world[gemToCheck.Address + dir].myType == myGemType)
             {
@@ -82,7 +88,7 @@ public class Checker : MonoBehaviour
     /// <param name="worldList">the copy of all gems in the world</param>
     /// <param name="listOfGemsToRemove">the globally unique set of gems to be removed in this turn</param>
     /// <param name="matchedLines">the list of lines that have been matched (for UI)</param>
-    public static void BitwiseRayTester
+    public  void BitwiseRayTester
         (
             Vector3Int StartingPosition,
             Vector3Int DirectionVector,
@@ -202,13 +208,13 @@ public class Checker : MonoBehaviour
         }
     }
     
-    public static bool CompareGemTypes(Gem g1, Gem g2)
+    public  bool CompareGemTypes(Gem g1, Gem g2)
     {
         return g1.myType == g2.myType;
     }
 
     // TODO: make a "check gem for matches" which will be faster for checking swaps
-    public static void CheckWorldForMatch3(Dictionary<Vector3Int, Gem> world, 
+    public  void CheckWorldForMatch3(Dictionary<Vector3Int, Gem> world, 
                                             List<Gem> removeList, 
                                             List<List<Vector3Int>> lineAddressesList, 
                                             bool CheckForMoves)
@@ -241,7 +247,7 @@ public class Checker : MonoBehaviour
         }
     }
 
-    public static void AddToListIfNotInList<T>(T thing, List<T> list)
+    public  void AddToListIfNotInList<T>(T thing, List<T> list)
     {
         if (!list.Contains(thing))
         {

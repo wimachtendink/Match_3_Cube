@@ -26,4 +26,6 @@ Is possible moves checker working? look into this
 
 ## BUGS:
 
+on drop "Gems" turn white/char0 which looks dumb
+
 lock not preventing direction change	

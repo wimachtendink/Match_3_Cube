@@ -96,7 +96,6 @@ public class SelectedPiece : MonoBehaviour
                         if (Gem.directions.Contains(test))
                         {
                             Indicator.SetActive(false);
-                            // TODO: TrySwap should return bool which should be handled here, what happens when it fails?
                             swapper.StartGemSwapAttempt(tempGem, selected, fallDirection);
                         }
                         else
@@ -112,8 +111,6 @@ public class SelectedPiece : MonoBehaviour
                         Indicator.SetActive(false);
                         selected = null;
                     }
-
-                    //TODO: consider then change, set selected to null here tautological-like!
                 }
                 else
                 {

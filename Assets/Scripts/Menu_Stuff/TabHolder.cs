@@ -12,6 +12,17 @@ public class TabHolder : MonoBehaviour
 
     public List<GameObject> pages;
 
+    public void NextPage()
+    {
+        DesiredActivePage = (DesiredActivePage + 1) % pages.Count;
+        SetActivePage();
+    }
+    public void PreviousPage()
+    {
+        DesiredActivePage = (DesiredActivePage - 1) % pages.Count;
+        SetActivePage();
+    }
+
     public void SetActivePage()
     {
         foreach (var page in pages)

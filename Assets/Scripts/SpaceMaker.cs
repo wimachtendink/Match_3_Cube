@@ -13,7 +13,7 @@ public class SpaceMaker : MonoBehaviour
 
     public GameObject GemPrefab;
 
-    [Range(3,6)]
+    [Range(3,10)]
     public int qtyGemColors;
 
     public static int Dimentions;
@@ -66,7 +66,7 @@ public class SpaceMaker : MonoBehaviour
         List<List<Vector3Int>> world = new List<List<Vector3Int>>();
 
         // TODO: calling this TWICE seems insane, but instead we're just calling and calling until something settles out... thats bad
-        Checker.CheckWorldForMatch3(addressBook, gems, world, false);
+        Checker.instance.CheckWorldForMatch3(addressBook, gems, world, false);
         int counter = 0;
         while(gems.Count > 0 && counter < 100)
         {
@@ -74,12 +74,12 @@ public class SpaceMaker : MonoBehaviour
             {
                 foreach(var v in l)
                 {
-                    addressBook[v].MakeNewGemOfType(Checker.GetBestSwapToColor(addressBook[v], addressBook));
+                    addressBook[v].MakeNewGemOfType(Checker.instance.GetBestSwapToColor(addressBook[v], addressBook));
                 }
             }
             world.Clear();
 
-            Checker.CheckWorldForMatch3(addressBook, gems, world, false);
+            Checker.instance.CheckWorldForMatch3(addressBook, gems, world, false);
             counter++;
         }
         if(counter == 100)

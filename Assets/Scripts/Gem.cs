@@ -22,6 +22,14 @@ public enum GemType
     Vivid_Red,
     Grayish_Yellow,
     Medium_Gray,
+    Vivid_Orange_Yellow    ,
+    Strong_Purplish_Red    ,
+    Vivid_Greenish_Yellow  ,
+    Strong_Reddish_Brown,
+    Vivid_Yellowish_Green  ,
+    Deep_Yellowish_Brown ,
+    Vivid_Reddish_Orange  ,
+    Dark_Olive_Green        ,
 
 
     none
@@ -30,7 +38,7 @@ public enum GemType
 public class Gem : MonoBehaviour
 {
 
-    int mostRecentGemMax;
+    int _mostRecentGemMax;
 
     //  --  --  --  --  --  --  --  --  class stuff
 
@@ -54,6 +62,14 @@ public class Gem : MonoBehaviour
         {GemType.Vivid_Red,          ColorList._kellysMaxContrastSet[4]},
         {GemType.Grayish_Yellow,     ColorList._kellysMaxContrastSet[5]},
         {GemType.Medium_Gray,        ColorList._kellysMaxContrastSet[6]},
+        {GemType.Vivid_Orange_Yellow    , ColorList._kellysMaxContrastSet[7] },
+        {GemType.Strong_Purplish_Red    , ColorList._kellysMaxContrastSet[8]  },
+        {GemType.Vivid_Greenish_Yellow  , ColorList._kellysMaxContrastSet[9]  },
+        {GemType.Strong_Reddish_Brown, ColorList._kellysMaxContrastSet[10] },
+        {GemType.Vivid_Yellowish_Green  , ColorList._kellysMaxContrastSet[11]},
+        {GemType.Deep_Yellowish_Brown , ColorList._kellysMaxContrastSet[12]},
+        {GemType.Vivid_Reddish_Orange  , ColorList._kellysMaxContrastSet[13]},
+        {GemType.Dark_Olive_Green        , ColorList._kellysMaxContrastSet[14]},
     };
 
     public static IEnumerator AnimateDoubleSwap(Gem g1, Gem g2, bool reverse)
@@ -96,13 +112,13 @@ public class Gem : MonoBehaviour
     public void MakeNewGem()
     {
         //I need a way to make this adjust with colors list
-        myType = (GemType)Random.Range(0, mostRecentGemMax);
+        myType = (GemType)Random.Range(0, _mostRecentGemMax);
         name = Address + myType.ToString() ;
     }
 
     public void MakeNewRandomGem(int max)
     {
-        mostRecentGemMax = max;
+        _mostRecentGemMax = max;
         myType = (GemType)Random.Range(0, max);
         name = Address + myType.ToString();
     }
