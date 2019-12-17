@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpaceMaker : MonoBehaviour
 {
-
     public ButtonValue dimButtonValue;
     public ButtonValue colorButtonValue;
 
@@ -20,7 +19,7 @@ public class SpaceMaker : MonoBehaviour
     public static int Dimentions;
     public static int DimentionsCube;
 
-    [Range(3, 31)]
+    [Range(3, 10)]
     public int dimentions;
     public Transform playspace;    
     public Dictionary<Vector3Int, Gem> addressBook;

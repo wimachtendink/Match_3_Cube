@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+// TODO: Generally break everything into smaller classes, then try to add come DI in lieu of DOTS
+
 public class GemSwapper : MonoBehaviour
 {
     public int CurrentChain = 0;
@@ -21,10 +23,9 @@ public class GemSwapper : MonoBehaviour
 
     public UnityEvent onScoreIncriment;
 
-    //public Vector3Int fallDirection = Vector3Int.down;
-
     public GameObject FallDirectionIndicator;
 
+    // TODO: Try*** should return BOOL and take an out argument
     public void TrySwapGems(Gem g1, Gem g2, Vector3Int _fallDirection)
     {
         FireSounds.PlaySound(FireSounds.Swap);
