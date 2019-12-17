@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
 {
-
     public static ButtonManager instance;
 
     public Transform SelectController;
@@ -24,7 +23,7 @@ public class ButtonManager : MonoBehaviour
 
     public bool CheckForMenuButtonClick(Vector3 _pos)
     {
-        //        print("checking for buttons pressed!");
+        Debug.Log("checking buttons for presses");
         foreach (var m in menuButtons)
         {
             if (Vector3.Distance(m.transform.position, _pos) < m.radius)

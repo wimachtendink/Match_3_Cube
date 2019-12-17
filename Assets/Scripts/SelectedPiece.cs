@@ -35,109 +35,135 @@ public class SelectedPiece : MonoBehaviour
         SetFallIndicator();
     }
 
-    //this is the only method which actually logically belongs in this script, Everything else should move I think
     public void OnIndicatorClick()
     {
-        if(!ButtonManager.CheckForMenuButtonClick() && sm.ThereIsAWorld)
+
+        /*
+        //isn't there a better way to do this? it seems crazy
+        //reject enum:
+        Menu
+        NoWorld
+        Locked
+        OutOfBounds
+        Deselect
+        InvalidSwap
+
+        // 1) check if we have clicked a button
+        // 2) check if the world has been created
+        // 3) check if the controller is locked
+        // 4) check if we have selected a valid position
+        // 5) check if we already have a selected piece
+        // 6) check if we have reselected the same piece (deselect)
+        // 7) check if the selected piece is a valid swap
+
+        */
+
+        if (!ButtonManager.CheckForMenuButtonClick())
         {
-            if (!controllerIsLocked)
+            if(sm.ThereIsAWorld)
             {
-                FireSounds.PlaySound(FireSounds.Click);
-                Gem tempGem;
+                HandleWorldClick();
+            }
+            else
+            {
+                Debug.LogWarning("we don't have a world but we are clicking!");
+            }
+        }else
+        {
+            //this is the "we clicked on a button" case which overrides world clicks
+        }
+    }
 
-                if (sm.addressBook.ContainsKey(selectionLocation.controllerPlayspacePostion))
+    void HandleWorldClick()
+    {
+        if (!controllerIsLocked)
+        {
+            FireSounds.PlaySound(FireSounds.Click);
+            Gem tempGem;
+            if (sm.addressBook.ContainsKey(selectionLocation.controllerPlayspacePostion))
+            {
+                tempGem = sm.addressBook[selectionLocation.controllerPlayspacePostion];
+                //if we already have something selected
+                if (selected)
                 {
-                    tempGem = sm.addressBook[selectionLocation.controllerPlayspacePostion];
-                    //if we already have something selected
-                    if (selected)
+                    //then we check if it is the same thing as we ALREADY HAD SELECTED
+                    if (selected != tempGem)
                     {
-                        //then we check if it is the same thing as we ALREADY HAD SELECTED
-                        if (selected != tempGem)
+                        //Get the vector from one to the other
+                        Vector3Int test = selected.Address - tempGem.Address;
+
+                        //check if we selected something in a valid swap direction
+                        if (Gem.directions.Contains(test))
                         {
-                            //Get the vector from one to the other
-                            Vector3Int test = selected.Address - tempGem.Address;
-
-                            //check if we selected something in a valid swap direction
-                            if (Gem.directions.Contains(test))
-                            {
-                                Indicator.SetActive(false);
-                                // TODO: TrySwap should return bool which should be handled here, what happens when it fails?
-                                swapper.TrySwapGems(tempGem, selected, fallDirection);
-                            }
-                            else
-                            {
-
-                                //TODO: actually do this part!
-                                Debug.LogError("Invalid_Selection.wav not found!");
-                            }
-
-                            selected = null;
+                            Indicator.SetActive(false);
+                            // TODO: TrySwap should return bool which should be handled here, what happens when it fails?
+                            swapper.StartGemSwapAttempt(tempGem, selected, fallDirection);
                         }
                         else
                         {
-                            Indicator.SetActive(false);
-                            selected = null;
+                            //TODO: actually do this part!
+                            Debug.LogError("Invalid_Selection.wav not found!");
                         }
 
-                        //TODO: consider then change, set selected to null here tautological-like!
+                        selected = null;
                     }
                     else
                     {
-                        //place indicator
-                        Indicator.SetActive(true);
-                        Indicator.transform.localPosition = tempGem.Address;
-                        //set selected
-                        selected = tempGem;
+                        Indicator.SetActive(false);
+                        selected = null;
                     }
+
+                    //TODO: consider then change, set selected to null here tautological-like!
                 }
                 else
                 {
-//                    Debug.Log("setting fall direction - or trying to");
-                    //should be get distance to center > (dimentions), set to dir.floortotin
-                    if (selectionLocation.controllerPlayspacePostion.x > sm.dimentions)
-                    {
-                        fallDirection = new Vector3Int(1, 0, 0);
-                    }
-                    else if (selectionLocation.controllerPlayspacePostion.x < 0)
-                    {
-                        fallDirection = new Vector3Int(-1, 0, 0);
-                    }
-                    else if (selectionLocation.controllerPlayspacePostion.y > sm.dimentions)
-                    {
-                        fallDirection = new Vector3Int(0, 1, 0);
-                    }
-                    else if (selectionLocation.controllerPlayspacePostion.y < 0)
-                    {
-                        fallDirection = new Vector3Int(0, -1, 0);
-                    }
-                    else if (selectionLocation.controllerPlayspacePostion.z > sm.dimentions)
-                    {
-                        fallDirection = new Vector3Int(0, 0, 1);
-                    }
-                    else if (selectionLocation.controllerPlayspacePostion.z < 0)
-                    {
-                        fallDirection = new Vector3Int(0, 0, -1);
-                    }
-
-                    SetFallIndicator();
-
-                    FireSounds.PlaySound(FireSounds.ChangeFallDirection);
-
-                    //remove indicator if present
-                    Indicator.SetActive(false);
-                    //invalid selection
-                    selected = null;
+                    //place indicator
+                    Indicator.SetActive(true);
+                    Indicator.transform.localPosition = tempGem.Address;
+                    //set selected
+                    selected = tempGem;
                 }
             }
             else
             {
-                Debug.LogError("controller_currently_locked.wav not found");
-            }
+                if (selectionLocation.controllerPlayspacePostion.x > sm.dimentions)
+                {
+                    fallDirection = new Vector3Int(1, 0, 0);
+                }
+                else if (selectionLocation.controllerPlayspacePostion.x < 0)
+                {
+                    fallDirection = new Vector3Int(-1, 0, 0);
+                }
+                else if (selectionLocation.controllerPlayspacePostion.y > sm.dimentions)
+                {
+                    fallDirection = new Vector3Int(0, 1, 0);
+                }
+                else if (selectionLocation.controllerPlayspacePostion.y < 0)
+                {
+                    fallDirection = new Vector3Int(0, -1, 0);
+                }
+                else if (selectionLocation.controllerPlayspacePostion.z > sm.dimentions)
+                {
+                    fallDirection = new Vector3Int(0, 0, 1);
+                }
+                else if (selectionLocation.controllerPlayspacePostion.z < 0)
+                {
+                    fallDirection = new Vector3Int(0, 0, -1);
+                }
 
+                SetFallIndicator();
+
+                FireSounds.PlaySound(FireSounds.ChangeFallDirection);
+
+                //remove indicator if present
+                Indicator.SetActive(false);
+                //invalid selection
+                selected = null;
+            }
         }
         else
         {
-            Debug.LogWarning("we don't have a world but we are clicking!");
+            Debug.LogError("controller_currently_locked.wav not found");
         }
     }
 

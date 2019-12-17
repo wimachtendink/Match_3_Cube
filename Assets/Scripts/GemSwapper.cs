@@ -25,8 +25,8 @@ public class GemSwapper : MonoBehaviour
 
     public GameObject FallDirectionIndicator;
 
-    // TODO: Try*** should return BOOL and take an out argument
-    public void TrySwapGems(Gem g1, Gem g2, Vector3Int _fallDirection)
+    //I would prefer if everything returned to this point
+    public void StartGemSwapAttempt(Gem g1, Gem g2, Vector3Int _fallDirection)
     {
         FireSounds.PlaySound(FireSounds.Swap);
         StartCoroutine(DealWithSwap(g1, g2, _fallDirection));
@@ -38,14 +38,19 @@ public class GemSwapper : MonoBehaviour
 
         controllerIsLocked = true;
 
-        //this is probably a terrible use of memory
+        //OLD COMMENT: this is probably a terrible use of memory
+        //new: what about this could be bad?
+        //we're copying the world into a temp thing so we don't break anything, makes sense to me
+        //maybe we could mkae this a little more functional?
         Dictionary<Vector3Int, Gem> fakeWorld = new Dictionary<Vector3Int, Gem>(sm.addressBook);
         List<Gem> removeList = new List<Gem>(SpaceMaker.DimentionsCube);
 
         //set hypothetical swap
         fakeWorld[g1.Address] = g2;
         fakeWorld[g2.Address] = g1;
-        //change this to only check the rays on which the gems actually sit
+
+        //change this to only check the rays on which the gems actually sit 
+            // no, we need to check all rays that either gem sits on 
         Checker.CheckWorldForMatch3(fakeWorld, removeList, new List<List<Vector3Int>>(), true);
 
         if (removeList.Contains(g1) || removeList.Contains(g2))
@@ -227,15 +232,11 @@ public class GemSwapper : MonoBehaviour
 
                 foreach (var g in ListOfMatched)
                 {
-
-                    //-down * dimentions should give me 1 above the world... right?
-
                     Vector3Int start = g.Address + wayUp;
 
                     StartCoroutine(g.AnimateReAppear());
                     StartCoroutine(g.AnimateDeal(start));
                 }
-
             }
             else
             {

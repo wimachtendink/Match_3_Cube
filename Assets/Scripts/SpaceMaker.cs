@@ -61,40 +61,31 @@ public class SpaceMaker : MonoBehaviour
 
     void RemoveRuns()
     {
-        List<Gem> list = new List<Gem>(DimentionsCube);
+        List<Gem> gems = new List<Gem>(DimentionsCube);
 
-        List<List<Vector3Int>> ll = new List<List<Vector3Int>>();
+        List<List<Vector3Int>> world = new List<List<Vector3Int>>();
 
-        //print(" --- Start! ---");
-
-        Checker.CheckWorldForMatch3(addressBook, list, ll, false);
-
+        // TODO: calling this TWICE seems insane, but instead we're just calling and calling until something settles out... thats bad
+        Checker.CheckWorldForMatch3(addressBook, gems, world, false);
         int counter = 0;
-
-//        print(ll.Count);
-        
-        while(list.Count > 0 && counter < 100)
+        while(gems.Count > 0 && counter < 100)
         {
-            foreach (var l in ll)
+            foreach (var l in world)
             {
                 foreach(var v in l)
                 {
                     addressBook[v].MakeNewGemOfType(Checker.GetBestSwapToColor(addressBook[v], addressBook));
                 }
             }
-            ll.Clear();
+            world.Clear();
 
-//            print(" --- CLEARED! ---");
-            Checker.CheckWorldForMatch3(addressBook, list, ll, false);
+            Checker.CheckWorldForMatch3(addressBook, gems, world, false);
             counter++;
         }
-
         if(counter == 100)
         {
             Debug.LogError("We never got settled in 100 runs!");
         }
-
-//        print("ran " + counter + " times");
     }
 
     public void Apocalypse()
